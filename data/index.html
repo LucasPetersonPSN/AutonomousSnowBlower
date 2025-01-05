@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Autonomous Snowblower Webapp Home</title>
+        <link rel="stylesheet" href="style.css">
+        <script src="script.js"></script>
+    </head>
+    <body>
+        <h1 class="banner">Autonomous Snowblower Webapp</h1>
+        
+        <!-- Mode selector buttons at the bottom -->
+
+        <section class="main">
+            <!-- Manual Mode screen -->
+            <section class="manualModeScreen" id="manualModeScreen">
+                <div class="buttonContainer">
+                    <button id="forwardButton">Forward</button>
+                </div>
+                <div class="buttonContainer">
+                    <button id="leftButton">Left</button>
+                    <button id="rightButton">Right</button>
+                </div>
+                <div class="buttonContainer">
+                    <button id="backwardsButton">Backwards</button>
+                </div>
+            </section>
+
+            <!-- Autonomous Mode screen -->
+            <section class="autoModeScreen" id="autoModeScreen">
+                <p>AUTO MODE</p>
+            </section>
+
+            <!-- Mapping Mode screen -->
+            <section class="mappingModeScreen" id="mappingModeScreen">
+                <p>MAPPING MODE</p>
+            </section>
+        </section>
+    </body>
+    <footer>
+        <button class="modeButtons" onclick="manualModeScreen()">Manual Mode</button>
+        <button class="modeButtons" onclick="autoModeScreen()">Autonomous Mode</button>
+        <button class="modeButtons" onclick="mappingModeScreen()">Mapping Mode</button>
+    </footer>
+</html>
