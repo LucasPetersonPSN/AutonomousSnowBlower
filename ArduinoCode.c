@@ -137,33 +137,33 @@ void loop() {
           digitalWrite(13, LOW);
         }
         */
-        if (inputString == "b'F'") {  // FORWARD
+        if (inputString == "F") {  // FORWARD
             digitalWrite(motorLeft1, HIGH);
             digitalWrite(motorLeft2, LOW); // M1 Forward
             digitalWrite(motorRight1, LOW);
             digitalWrite(motorRight2, HIGH); // M2 Forward
             analogWrite(speedLeft, 255); // M1 Speed
             analogWrite(speedRight, 255); // M2 Speed
-        } else if (inputString == "b'S'") {  // STOP
+        } else if (inputString == "S") {  // STOP
             digitalWrite(motorLeft1, LOW);
             digitalWrite(motorLeft2, LOW); // M1 OFF
             digitalWrite(motorRight1, LOW);
             digitalWrite(motorRight2, LOW); // M2 OFF
-        } else if (inputString == "b'R'") {  // RIGHT TURN
+        } else if (inputString == "R") {  // RIGHT TURN
             digitalWrite(motorLeft1, HIGH);
             digitalWrite(motorLeft2, LOW); // M1 Reverse, turn right
             digitalWrite(motorRight1, HIGH);
             digitalWrite(motorRight2, LOW); // M2 Forward, turn right
             analogWrite(speedLeft, 200); // M1 Speed
             analogWrite(speedRight, 200); // M2 Speed
-        } else if (inputString == "b'L'") {  // LEFT TURN
+        } else if (inputString == "L") {  // LEFT TURN
             digitalWrite(motorLeft1, LOW);
             digitalWrite(motorLeft2, HIGH); // M1 Forward, turn left
             digitalWrite(motorRight1, LOW);
             digitalWrite(motorRight2, HIGH); // M2 Reverse, turn left
             analogWrite(speedLeft, 200); // M1 Speed
             analogWrite(speedRight, 200); // M2 Speed
-        } else if (inputString == "b'R'") {  // BACKWARDS
+        } else if (inputString == "R") {  // BACKWARDS
             digitalWrite(motorLeft1, LOW);
             digitalWrite(motorLeft2, HIGH); // M1 Reverse
             digitalWrite(motorRight1, HIGH);
