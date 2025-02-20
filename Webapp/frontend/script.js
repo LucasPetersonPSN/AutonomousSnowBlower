@@ -1,4 +1,5 @@
-const ws = new WebSocket("ws://10.42.0.1:8765");  // This IP must be the Jetsons IP. If this is changing, this means it is not a static IP, and must be fixed ASAP
+// This IP must be the Jetsons IP. If this is changing, this means it is not a static IP, and must be fixed ASAP
+const ws = new WebSocket("ws://10.42.0.1:8765"); 
 
 //Confirm that the websocket connected
 ws.onopen = () => console.log("WebSocket connected");
@@ -34,17 +35,25 @@ function mappingModeScreen() {
 }
 
 
-
-
-//MODIFY CODE HERE FOR BUTTONS THAT SEND COMMANDS TO THE JETSON! getElementById is initated by giving the button you made an ID in the HTML.
+//MODIFY CODE HERE FOR BUTTONS THAT SEND COMMANDS TO THE JETSON!
+//This block listens for the user to press a button, and calls the sendCommand function
+//getElementById is initated by giving the button you made an ID in the HTML.
 //All buttons but the movement buttons should be MOUSEUP. This is to prevent accidential clicks. 
 document.addEventListener("DOMContentLoaded", () => {
     document.getElementById("forwardButton").addEventListener("mousedown", () => sendCommand("F"));
+    document.getElementById("forwardButton").addEventListener("mouseup", () => sendCommand("S"));
+
     document.getElementById("backwardsButton").addEventListener("mousedown", () => sendCommand("B"));
+    document.getElementById("backwardsButton").addEventListener("mouseup", () => sendCommand("S"));
+
     document.getElementById("leftButton").addEventListener("mousedown", () => sendCommand("L"));
+    document.getElementById("leftButton").addEventListener("mouseup", () => sendCommand("S"));
+
     document.getElementById("rightButton").addEventListener("mousedown", () => sendCommand("R"));
+    document.getElementById("rightButton").addEventListener("mouseup", () => sendCommand("S"));
+
     document.getElementById("restartButton").addEventListener("mousedown", () => sendCommand("C"));
-    document.addEventListener("mouseup", () => sendCommand("S"));
+    //document.addEventListener("mouseup", () => sendCommand("S"));
 });
 
 // Debugging: log key presses
@@ -55,4 +64,3 @@ document.addEventListener("keydown", (e) => {
 document.addEventListener("keyup", (e) => {
     console.log(e.key);
 });
-
