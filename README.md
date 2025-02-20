@@ -12,6 +12,7 @@
 
 
 <h2>Github Instructions</h2>
+
  - Clone the repo (sign into github)
  - Create a branch, name it your name
  - Make your changes
