@@ -11,3 +11,11 @@
 - (1) Add an "Emergency Stop" button that is persistant (as in it is always in view). This could be put in the title bar on the right or left side
 
 
+<h2>Github Instructions</h2>
+ - Clone the repo (sign into github)
+ - Create a branch, name it your name
+ - Make your changes
+ - Push your changes
+ - Let Lucas know you are merging a branch
+ - Delete your branch (go to main branch, then press delete branch, then select your branch name)
+ - Press Fetch to get the updated Main branch with your changes 
