@@ -5,7 +5,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>Autonomous Snowblower Webapp Home</title>
         <link rel="stylesheet" href="style.css">
-        <script src="script.js"></script>
+        
     </head>
     <body>
         <h1 class="banner">Autonomous Snowblower Webapp</h1>
@@ -37,10 +37,13 @@
                 <p>MAPPING MODE</p>
             </section>
         </section>
+    <script src="/script.js"></script>
     </body>
     <footer>
         <button class="modeButtons" onclick="manualModeScreen()">Manual Mode</button>
         <button class="modeButtons" onclick="autoModeScreen()">Autonomous Mode</button>
         <button class="modeButtons" onclick="mappingModeScreen()">Mapping Mode</button>
+        
+        <button class="modeButtons" id="restartButton">RESTART</button>
     </footer>
 </html>

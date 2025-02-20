@@ -37,8 +37,8 @@ document.addEventListener("DOMContentLoaded", () => {
     document.getElementById("backwardsButton").addEventListener("mousedown", () => sendCommand("B"));
     document.getElementById("leftButton").addEventListener("mousedown", () => sendCommand("L"));
     document.getElementById("rightButton").addEventListener("mousedown", () => sendCommand("R"));
-
-    document.addEventListener("mouseup", () => sendCommand("STOP"));  // Stop movement when button is released
+    document.getElementById("restartButton").addEventListener("mousedown", () => sendCommand("C"));
+    document.addEventListener("mouseup", () => sendCommand("S"));
 });
 
 // Debugging: log key presses
