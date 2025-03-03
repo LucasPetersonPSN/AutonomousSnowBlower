@@ -10,6 +10,7 @@
 - (1) Start work on the mapping mode screen. It should consist of the movement buttons, a "Start Mapping" button, a "End Mapping" button, and a "Set Current Location as Home" button.
 - (1) Add an "Emergency Stop" button that is persistant (as in it is always in view). This could be put in the title bar on the right or left side
 hello
+- (1) Create a poweroff button
 
 <h2>Github Instructions</h2>
 
