@@ -24,7 +24,8 @@ const int trigRight = 2;
 const int echoRight = 3;
 const int trigRear = 4;
 const int echoRear = 5;
-
+int rSpeed = 0;
+int lSpeed = 0;
 
 void setup() {
     //Setting the baud rate
@@ -45,6 +46,8 @@ void setup() {
     pinMode(echoRight, INPUT);
     pinMode(trigRear, OUTPUT);
     pinMode(echoRear, INPUT);
+
+    analogWrite(speedLeft, lSpeed);
 }
 
 long readUltrasonic(int trigPin, int echoPin) {
@@ -71,47 +74,63 @@ void loop() {
 
         //FORWARD
         if (command == forward) {  // FORWARD
-            digitalWrite(motorLeft1, HIGH);
-            digitalWrite(motorLeft2, LOW); // M1 Forward
-            digitalWrite(motorRight1, LOW);
-            digitalWrite(motorRight2, HIGH); // M2 Forward
-            analogWrite(speedLeft, 255); // M1 Speed
-            analogWrite(speedRight, 255); // M2 Speed
+            digitalWrite(motorLeft1, LOW);
+            //digitalWrite(motorLeft2, LOW); // M1 Forward
+            //digitalWrite(motorRight1, LOW);
+            digitalWrite(motorRight2, LOW); // M2 Forward
+            analogWrite(speedLeft, lSpeed); // M1 Speed
+            analogWrite(speedRight, rSpeed); // M2 Speed
         } 
         //STOP
         else if (command == allStop) {  // STOP
             digitalWrite(motorLeft1, LOW);
-            digitalWrite(motorLeft2, LOW); // M1 OFF
-            digitalWrite(motorRight1, LOW);
+            //digitalWrite(motorLeft2, LOW); // M1 OFF
+            //digitalWrite(motorRight1, LOW);
             digitalWrite(motorRight2, LOW); // M2 OFF
+            analogWrite(speedLeft, 0);
+            analogWrite(speedRight, 0);
         }
         //TURN RIGHT
         else if (command == rightTurn) {  // RIGHT TURN
             digitalWrite(motorLeft1, HIGH);
-            digitalWrite(motorLeft2, LOW); // M1 Reverse, turn right
-            digitalWrite(motorRight1, HIGH);
+            //digitalWrite(motorLeft2, LOW); // M1 Reverse, turn right
+            //digitalWrite(motorRight1, HIGH);
             digitalWrite(motorRight2, LOW); // M2 Forward, turn right
-            analogWrite(speedLeft, 200); // M1 Speed
-            analogWrite(speedRight, 200); // M2 Speed
+            analogWrite(speedLeft, lSpeed); // M1 Speed
+            analogWrite(speedRight, lSpeed); // M2 Speed
         }
         //TURN LEFT
         else if (command == leftTurn) {  // LEFT TURN
             digitalWrite(motorLeft1, LOW);
-            digitalWrite(motorLeft2, HIGH); // M1 Forward, turn left
-            digitalWrite(motorRight1, LOW);
+            //digitalWrite(motorLeft2, HIGH); // M1 Forward, turn left
+            //digitalWrite(motorRight1, LOW);
             digitalWrite(motorRight2, HIGH); // M2 Reverse, turn left
-            analogWrite(speedLeft, 200); // M1 Speed
-            analogWrite(speedRight, 200); // M2 Speed
+            analogWrite(speedLeft, lSpeed); // M1 Speed
+            analogWrite(speedRight, rSpeed); // M2 Speed
         }
         //BACKWARDS
         else if (command == backward) {  // BACKWARDS
-            digitalWrite(motorLeft1, LOW);
-            digitalWrite(motorLeft2, HIGH); // M1 Reverse
-            digitalWrite(motorRight1, HIGH);
-            digitalWrite(motorRight2, LOW); // M2 Reverse
-            analogWrite(speedLeft, 255); // M1 Speed
-            analogWrite(speedRight, 255); // M2 Speed
+            digitalWrite(motorLeft1, HIGH);
+            //digitalWrite(motorLeft2, HIGH); // M1 Reverse
+            //digitalWrite(motorRight1, HIGH);
+            digitalWrite(motorRight2, HIGH); // M2 Reverse
+            analogWrite(speedLeft, lSpeed); // M1 Speed
+            analogWrite(speedRight, rSpeed); // M2 Speed
         }
+        //Speed Control
+        else if (command == "25"){
+          rSpeed = lSpeed = 64;
+        }
+        else if (command == "50"){
+          rSpeed = lSpeed = 130;
+        }
+        else if (command == "75"){
+          rSpeed = lSpeed = 190;
+        }
+        else if (command == "100"){
+          rSpeed = lSpeed = 250;
+        }
+        
     }
     delay(refreshRate);
 }

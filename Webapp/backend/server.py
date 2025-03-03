@@ -5,8 +5,6 @@ import websockets
 # Set up UART on Jetson Nano
 ser = serial.Serial("/dev/ttyACM0", 9600, timeout=1)
 
-
-#This block reads the serial monitor, ie. what the Ardunio is sending to the Jetson
 async def read_from_arduino():
     while True:
         arduino = ser.readline().decode('utf-8').strip()
@@ -14,8 +12,6 @@ async def read_from_arduino():
             print("Arduino says:", arduino)
         await asyncio.sleep(0.1)  # Avoids blocking the event loop
 
-
-#This block listens for commands sent from the user via websockets.
 async def handler(websocket, path):
     async for message in websocket:
         #print(f"Received: {message}")
@@ -39,7 +35,20 @@ async def handler(websocket, path):
             ser.write(b"Stop\n")
             print("Sent: Stop")
 
-# This block is what starts the websocket server to provide real time communication between the host and client
+        elif message == "25":
+            ser.write(b"25\n")
+            print("Sent: 25")
+        elif message == "50":
+            ser.write(b"50\n")
+            print("Sent: 50")
+        elif message == "75":
+            ser.write(b"75\n")
+            print("Sent: 75")
+        elif message == "100":
+            ser.write(b"100\n")
+            print("Sent: 100")
+
+# Create the WebSocket server with SO_REUSEADDR enabled
 async def start_server():
     server = await websockets.serve(handler, "0.0.0.0", 8765, reuse_address=True)
     print("WebSocket server started on ws://0.0.0.0:8765")
