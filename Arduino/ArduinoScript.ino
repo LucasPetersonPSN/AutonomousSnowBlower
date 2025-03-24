@@ -1,13 +1,12 @@
 //Setting the values for serial communication
 const int serialBaudRate = 9600;
 
-//Setting the values for the motor driver control pins
-const int motorLeft1 = 8;  //TO IN1
-const int motorLeft2 = 9;  //TO IN2
-const int motorRight1 = 13;  //TO IN3
-const int motorRight2 = 12;  //TO IN4
+//Setting the values for the motor driver control pins nad the relay control pin
+const int motorLeft = 8;  //TO IN1 **CHANGE
+const int motorRight = 12;  //TO IN4 **CHANGE
 const int speedLeft = 10;  //TO ENB
 const int speedRight = 11;  //TO ENA
+const int augerCont = 9;
 
 //Setting the values for the motor driver queues **TROUBLESHOOT HERE**
 const String forward = "Forward";
@@ -15,6 +14,8 @@ const String backward = "Backward";
 const String leftTurn = "Left";
 const String rightTurn = "Right";
 const String allStop = "Stop";
+const String augerStart = "GoAug";
+const String augerStop = "CeaseAug";
 const int refreshRate = 200;  //In miliseconds, has min of 50, max of 1000 (sensor limits)
 
 //Setting the values for the ultrasonic sensor control pins
@@ -74,48 +75,46 @@ void loop() {
 
         //FORWARD
         if (command == forward) {  // FORWARD
-            digitalWrite(motorLeft1, LOW);
-            //digitalWrite(motorLeft2, LOW); // M1 Forward
-            //digitalWrite(motorRight1, LOW);
-            digitalWrite(motorRight2, LOW); // M2 Forward
+            digitalWrite(motorLeft, LOW);
+            digitalWrite(motorRight, LOW); // M2 Forward
             analogWrite(speedLeft, lSpeed); // M1 Speed
             analogWrite(speedRight, rSpeed); // M2 Speed
         } 
         //STOP
         else if (command == allStop) {  // STOP
-            digitalWrite(motorLeft1, LOW);
-            //digitalWrite(motorLeft2, LOW); // M1 OFF
-            //digitalWrite(motorRight1, LOW);
-            digitalWrite(motorRight2, LOW); // M2 OFF
+            digitalWrite(motorLeft, LOW);
+            digitalWrite(motorRight, LOW); // M2 OFF
             analogWrite(speedLeft, 0);
             analogWrite(speedRight, 0);
+            digitalWrite(augerCont, LOW);
         }
         //TURN RIGHT
         else if (command == rightTurn) {  // RIGHT TURN
-            digitalWrite(motorLeft1, HIGH);
-            //digitalWrite(motorLeft2, LOW); // M1 Reverse, turn right
-            //digitalWrite(motorRight1, HIGH);
-            digitalWrite(motorRight2, LOW); // M2 Forward, turn right
+            digitalWrite(motorLeft, HIGH);
+            digitalWrite(motorRight, LOW); // M2 Forward, turn right
             analogWrite(speedLeft, lSpeed); // M1 Speed
             analogWrite(speedRight, lSpeed); // M2 Speed
         }
         //TURN LEFT
         else if (command == leftTurn) {  // LEFT TURN
-            digitalWrite(motorLeft1, LOW);
-            //digitalWrite(motorLeft2, HIGH); // M1 Forward, turn left
-            //digitalWrite(motorRight1, LOW);
-            digitalWrite(motorRight2, HIGH); // M2 Reverse, turn left
+            digitalWrite(motorLeft, LOW);
+            digitalWrite(motorRight, HIGH); // M2 Reverse, turn left
             analogWrite(speedLeft, lSpeed); // M1 Speed
             analogWrite(speedRight, rSpeed); // M2 Speed
         }
         //BACKWARDS
         else if (command == backward) {  // BACKWARDS
-            digitalWrite(motorLeft1, HIGH);
-            //digitalWrite(motorLeft2, HIGH); // M1 Reverse
-            //digitalWrite(motorRight1, HIGH);
-            digitalWrite(motorRight2, HIGH); // M2 Reverse
+            digitalWrite(motorLeft, HIGH);
+            digitalWrite(motorRight, HIGH); // M2 Reverse
             analogWrite(speedLeft, lSpeed); // M1 Speed
             analogWrite(speedRight, rSpeed); // M2 Speed
+        }
+        //Auger Control
+        else if (command == augerStart) {
+            digitalWrite(augerCont, HIGH);
+        }
+        else if (command == augerStart) {
+            digitalWrite(augerCont, LOW);
         }
         //Speed Control
         else if (command == "25"){
@@ -130,7 +129,9 @@ void loop() {
         else if (command == "100"){
           rSpeed = lSpeed = 250;
         }
-        
+        else {
+            
+        } 
     }
     delay(refreshRate);
 }
