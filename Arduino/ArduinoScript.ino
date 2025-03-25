@@ -68,7 +68,9 @@ void loop() {
     String distLeft = String(readUltrasonic(trigLeft, echoLeft));
     String distRight = String(readUltrasonic(trigRight, echoRight));
     String distRear = String(readUltrasonic(trigRear, echoRear));
-    Serial.println(distLeft + "/" + distRight + "/" + distRear + "-");  //ASCII 47 47 45
+    Serial.println("R" + distRight);
+    Serial.println("L" + distLeft);
+    Serial.println("B" + distRear);
     
     if (Serial.available()>0) {
         String command = Serial.readStringUntil('\n');
