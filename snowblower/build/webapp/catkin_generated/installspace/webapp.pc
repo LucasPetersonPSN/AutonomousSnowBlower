@@ -1,0 +1,8 @@
+prefix=/home/jetson/snowblower/install
+
+Name: webapp
+Description: Description of webapp
+Version: 0.0.0
+Cflags: -I${prefix}/include
+Libs: -L${prefix}/lib 
+Requires: 

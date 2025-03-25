@@ -1,0 +1,8 @@
+prefix=/home/jetson/snowblower/install
+
+Name: serial_communication
+Description: Description of serial_communication
+Version: 0.0.0
+Cflags: -I${prefix}/include
+Libs: -L${prefix}/lib 
+Requires: 

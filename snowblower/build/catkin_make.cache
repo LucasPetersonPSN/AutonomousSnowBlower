@@ -1,0 +1,2 @@
+serial_communication:webapp
+-DCATKIN_DEVEL_PREFIX=/home/jetson/snowblower/devel -DCMAKE_INSTALL_PREFIX=/home/jetson/snowblower/install -G Unix Makefiles
