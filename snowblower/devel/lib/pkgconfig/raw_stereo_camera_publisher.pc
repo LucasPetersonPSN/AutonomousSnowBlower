@@ -1,0 +1,8 @@
+prefix=/home/jetson/snowblower/devel
+
+Name: raw_stereo_camera_publisher
+Description: Description of raw_stereo_camera_publisher
+Version: 0.0.0
+Cflags: 
+Libs: -L${prefix}/lib 
+Requires: 
