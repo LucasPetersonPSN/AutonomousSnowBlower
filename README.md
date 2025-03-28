@@ -9,7 +9,6 @@
 - (3) Add a field that displays the cameras point of view on the manual mode and autonomous mode screen. 
 - (1) Start work on the mapping mode screen. It should consist of the movement buttons, a "Start Mapping" button, a "End Mapping" button, and a "Set Current Location as Home" button.
 - (1) Add an "Emergency Stop" button that is persistant (as in it is always in view). This could be put in the title bar on the right or left side
-- (1)
 
 - (1) Create a poweroff button
 
