@@ -1,5 +1,6 @@
 //Setting the values for serial communication
 const int serialBaudRate = 9600;
+const int eStopPin = 13;
 
 //Setting the values for the motor driver control pins nad the relay control pin
 const int motorLeft = 8;  //TO DIR
