@@ -10,11 +10,11 @@ const int speedRight = 11;  //TO ENA
 const int augerCont = 9;
 const int leftEncoderPin = 2;   // Must be interrupt-capable
 const int rightEncoderPin = 3;  // Must be interrupt-capable
-volatile long leftECount = 0;
-volatile long rightECount = 0;
+volatile long leftEncoderCount = 0;
+volatile long rightEncoderCount = 0;
 long prevLeftEncoder = 0;
 long prevRightEncoder = 0;
-const int baseSpeed = 150;  //Default speed of motors before encoder adjustment, only when encoders are used
+int baseSpeed = 150;  //Default speed of motors before encoder adjustment, only when encoders are used
 float Kp = 1.0;  //Proportional gain of encoder controller
 
 //Setting the values for the motor driver queues **TROUBLESHOOT HERE**
@@ -25,6 +25,9 @@ const String rightTurn = "Right";
 const String allStop = "Stop";
 const String augerStart = "GoAug";
 const String augerStop = "CeaseAug";
+const String recEStop = "JetEStop";
+const String sendEStop = "ArdEStop";
+const String allClear = "AllClearAllClear";
 const int refreshRate = 200;  //In miliseconds, has min of 50, max of 1000 (sensor limits)
 
 //Setting the values for the ultrasonic sensor control pins
@@ -46,12 +49,11 @@ const bool isEStop = false;
 void setup() {
     //Setting the baud rate
     Serial.begin(serialBaudRate);
+    pinMode(eStopPin, INPUT);
 
     //Setting the motor driver control pins
-    pinMode(motorLeft1, OUTPUT);
-    pinMode(motorLeft2, OUTPUT);
-    pinMode(motorRight1, OUTPUT);
-    pinMode(motorRight2, OUTPUT);
+    pinMode(motorLeft, OUTPUT);
+    pinMode(motorRight, OUTPUT);
     pinMode(speedLeft, OUTPUT);
     pinMode(speedRight, OUTPUT);
 
@@ -91,7 +93,7 @@ void rightEncoderISR() {
   rightEncoderCount++;
 }
 
-void balanceMotors() {
+void balanceSpeed() {
   long leftDelta = leftEncoderCount - prevLeftEncoder;
   long rightDelta = rightEncoderCount - prevRightEncoder;
 
@@ -109,7 +111,7 @@ void balanceMotors() {
 }
 
 void listenSerial() {
-    if (Serial.available()>0) {
+    if (Serial.available() > 0) {
         //Read the command
         String command = Serial.readStringUntil('\n');
         
@@ -181,18 +183,36 @@ void listenSerial() {
         }
             
         //Speed Control
-        else if (command == "25"){
+        else if (command == "25") {
           rSpeed = lSpeed = baseSpeed = 64;
         }
-        else if (command == "50"){
+        else if (command == "50") {
           rSpeed = lSpeed = baseSpeed = 130;
         }
-        else if (command == "75"){
+        else if (command == "75") {
           rSpeed = lSpeed = baseSpeed = 190;
         }
-        else if (command == "100"){
+        else if (command == "100") {
           rSpeed = lSpeed = baseSpeed = 250;
         }
+
+        //E-Stop
+        else if (command == recEStop) {
+            analogWrite(speedLeft, 0);
+            analogWrite(speedRight, 0);
+            digitalWrite(motorLeft, LOW);
+            digitalWrite(motorRight, LOW);
+            digitalWrite(augerCont, LOW);
+
+            while(1) {  //Freeze until all clear si recived
+                if (Serial.available() > 0) {
+                    String command = Serial.readStringUntil('\n');
+                    if (command == allClear)
+                        break;
+                }
+            }
+        }
+
         else {
             //Do nothing
         } 
@@ -208,12 +228,30 @@ void sendUltrasonic() {
     Serial.println("B" + distRear);
 }
 
+void checkEStop() {
+    if(digitalRead(eStopPin) == LOW) {  //E-Stop triggered
+        analogWrite(speedLeft, 0);
+        analogWrite(speedRight, 0);
+        digitalWrite(motorLeft, LOW);
+        digitalWrite(motorRight, LOW);
+        digitalWrite(augerCont, LOW);
+
+        Serial.println(sendEStop);
+        
+        while(digitalRead(eStopPin) == LOW) {
+            if(digitalRead(eStopPin) == HIGH){
+
+            }
+        }
+    } 
+}
 void loop() {
     if (takeSonicData)
         sendUltrasonic();
     
-    if (listenForCommand)
+    if (listenForCommands)
         listenSerial();
 
+    checkEStop();
     delay(refreshRate);
 }
