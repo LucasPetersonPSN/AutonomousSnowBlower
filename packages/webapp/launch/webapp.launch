@@ -1,0 +1,9 @@
+<launch>
+  <node name="webapp_server" pkg="webapp" type="server.py" output="screen"/>
+  <node name="http_server" pkg="roslaunch" type="roslaunch" output="screen">
+    <rosparam>
+      command: "cd /home/jetson/snowblower/src/webapp/launch && python -m SimpleHTTServer 8080"
+    </rosparam>
+  </node>
+</launch>
+
