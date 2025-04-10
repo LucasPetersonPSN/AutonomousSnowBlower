@@ -47,7 +47,7 @@ const String recEStop = "JetEStop";
 const String sendEStop = "ArdEStop";
 const String recClear = "JetAllClear";
 const String sendClear = "ArdAllClear";
-const int refreshRate = 2000;  //In miliseconds, has min of 50, max of 1000 (sensor limits), nominal 200
+const int refreshRate = 200;  //In miliseconds, has min of 50, max of 1000 (sensor limits), nominal 200
 
 //Setting the values for the ultrasonic sensor control pins
 const int trigLeft = 6;
