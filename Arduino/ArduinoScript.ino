@@ -56,11 +56,13 @@ const int trigRight = 2;  //**ENCODER CONFLICT
 const int echoRight = 3;  //**ENCODER CONFLICT
 const int trigRear = 4;
 const int echoRear = 5;
-int rSpeed = 0;
-int lSpeed = 0;
+int rSpeedMax = 255;
+int lSpeedMax = 255;
+int rSpeed = rSpeedMax;
+int lSpeed = lSpeedMax;
 
 //Debugging flags
-const bool takeSonicData = false;
+const bool takeSonicData = true;
 const bool listenForCommands = true;
 const bool useMotorEncoders = false;
 const bool isEStop = false;
@@ -136,7 +138,7 @@ void listenSerial() {
         
         //Motor Control
         if (command == forward) {
-            digitalWrite(motorLeft, LOW);
+            digitalWrite(motorLeft, HIGH);
             digitalWrite(motorRight, LOW);
             
             if (useMotorEncoders)
@@ -160,7 +162,7 @@ void listenSerial() {
             digitalWrite(augerCont, LOW);
         }
         else if (command == rightTurn) {  //Right
-            digitalWrite(motorLeft, HIGH);
+            digitalWrite(motorLeft, LOW);
             digitalWrite(motorRight, LOW);
 
             if (useMotorEncoders)
@@ -171,7 +173,7 @@ void listenSerial() {
             }
         }
         else if (command == leftTurn) {  //Left
-            digitalWrite(motorLeft, LOW);
+            digitalWrite(motorLeft, HIGH);
             digitalWrite(motorRight, HIGH);
 
             if (useMotorEncoders)
@@ -182,7 +184,7 @@ void listenSerial() {
             }
         }
         else if (command == backward) {
-            digitalWrite(motorLeft, HIGH);
+            digitalWrite(motorLeft, LOW);
             digitalWrite(motorRight, HIGH);
 
             if (useMotorEncoders)
@@ -203,16 +205,24 @@ void listenSerial() {
             
         //Speed Control
         else if (command == "25") {
-          rSpeed = lSpeed = baseSpeed = 64;
+          rSpeed = rSpeedMax * 0.25;
+          lSpeed = lSpeedMax * 0.25;
+          baseSpeed = rSpeed;
         }
         else if (command == "50") {
-          rSpeed = lSpeed = baseSpeed = 130;
+          rSpeed = rSpeedMax * 0.50;
+          lSpeed = lSpeedMax * 0.50;
+          baseSpeed = rSpeed;
         }
         else if (command == "75") {
-          rSpeed = lSpeed = baseSpeed = 190;
+          rSpeed = rSpeedMax * 0.75;
+          lSpeed = lSpeedMax * 0.75;
+          baseSpeed = rSpeed;
         }
         else if (command == "100") {
-          rSpeed = lSpeed = baseSpeed = 250;
+          rSpeed = rSpeedMax * 1;
+          lSpeed = lSpeedMax * 1;
+          baseSpeed = rSpeed;
         }
 
         //E-Stop
@@ -308,6 +318,6 @@ void loop() {
 
     checkBattLevels();
     checkEStop();
-    Serial.println(counter++);
+    //Serial.println(counter++);
     delay(refreshRate);
 }
