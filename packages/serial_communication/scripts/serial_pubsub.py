@@ -12,8 +12,6 @@ def callback(data):
 
 def main_loop():
     rospy.init_node('serial_pubsub', anonymous=True)
-    
-    # Ensure the subscriber is set up before entering the loop
     rospy.Subscriber('user_input', String, callback, queue_size=10)  
     rospy.loginfo("Started serial_pubsub node")
 
@@ -43,8 +41,7 @@ def main_loop():
             
             pub.publish(msg)
             rate.sleep()
-
-    rospy.spin()  # Keep the subscriber running
+    rospy.spin()
 
 if __name__ == '__main__':
     try:
