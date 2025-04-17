@@ -51,10 +51,10 @@ def gstreamer_pipeline(sensor_id=0):
 def main():
     rospy.init_node('stereo_camera_publisher', anonymous=True)
 
-    left_image_pub = rospy.Publisher('/camera/left/image_raw', Image, queue_size=1)
-    right_image_pub = rospy.Publisher('/camera/right/image_raw', Image, queue_size=1)
-    left_info_pub = rospy.Publisher('/camera/left/camera_info', CameraInfo, queue_size=1)
-    right_info_pub = rospy.Publisher('/camera/right/camera_info', CameraInfo, queue_size=1)
+    left_image_pub = rospy.Publisher('/stereo_camera/left/image_raw', Image, queue_size=1)
+    right_image_pub = rospy.Publisher('/stereo_camera/right/image_raw', Image, queue_size=1)
+    left_info_pub = rospy.Publisher('/stereo_camera/left/camera_info', CameraInfo, queue_size=1)
+    right_info_pub = rospy.Publisher('/stereo_camera/right/camera_info', CameraInfo, queue_size=1)
 
     bridge = CvBridge()
 
