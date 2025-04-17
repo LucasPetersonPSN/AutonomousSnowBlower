@@ -1,73 +1,101 @@
-const ws = new WebSocket("ws://10.42.0.1:8765");  // Replace with Jetson's IP if needed
+let eStopToggled = false;
+let socket;
 
-ws.onopen = () => console.log("WebSocket connected");
-ws.onerror = (error) => console.error("WebSocket error:", error);
+document.addEventListener('DOMContentLoaded', () => {
+    socket = new WebSocket('ws://' + window.location.hostname + ':8765');
 
-ws.onclose = () => {
-    console.log("Websocket disconnected. Attempting to reconnect..")
-    //setTimeout(() => location.reload(), 3000);
-}
-// Function to send commands over WebSocket
-function sendCommand(command) {
-    if (ws.readyState === WebSocket.OPEN) {
-        ws.send(command);
-    }
-}
+    const eStopButton = document.getElementById('eStop');
+    const bladeToggle = document.getElementById('bladeToggle');
 
-// Show different mode screens
-function showScreen(screenId) {
-    const screens = ["manualModeScreen", "autoModeScreen", "mappingModeScreen"];
-    screens.forEach(screen => {
-        document.getElementById(screen).style.display = 'none';
+    eStopButton.addEventListener('click', () => {
+        if (!eStopToggled) {
+            socket.send("Estop");
+            eStopButton.textContent = "Clear E-STOP";
+            eStopToggled = true;
+        } else {
+            socket.send("JetAllClear");
+            eStopButton.textContent = "E-STOP";
+            eStopToggled = false;
+        }
     });
-    document.getElementById(screenId).style.display = 'block';
+
+    bladeToggle.addEventListener('change', () => {
+        if (bladeToggle.checked) {
+            socket.send("BLADES_ON");
+        } else {
+            socket.send("BLADES_OFF");
+        }
+    });
+
+    // Motion controls with press + release logic
+    addPressRelease('forwardButton', "F");
+    addPressRelease('leftButton', "L");
+    addPressRelease('rightButton', "R");
+    addPressRelease('backwardsButton', "B");
+
+    // Speed controls
+    document.getElementById('speed25').addEventListener('click', () => {
+        socket.send("25");
+    });
+
+    document.getElementById('speed50').addEventListener('click', () => {
+        socket.send("50");
+    });
+
+    document.getElementById('speed75').addEventListener('click', () => {
+        socket.send("75");
+    });
+
+    document.getElementById('speed100').addEventListener('click', () => {
+        socket.send("100");
+    });
+
+    // Receive image stream
+    socket.onmessage = function (event) {
+        if (event.data.startsWith("data:image/jpeg;base64,")) {
+            const videoElement = document.getElementById('videoStream');
+            if (videoElement) {
+                videoElement.src = event.data;
+            }
+        }
+    };
+});
+
+function addPressRelease(buttonId, command) {
+    const button = document.getElementById(buttonId);
+    if (!button) return;
+
+    button.addEventListener('mousedown', () => socket.send(command));
+    button.addEventListener('mouseup', () => socket.send("S"));
+
+    button.addEventListener('touchstart', (e) => {
+        e.preventDefault(); // prevent ghost clicks
+        socket.send(command);
+    });
+    button.addEventListener('touchend', (e) => {
+        e.preventDefault();
+        socket.send("S");
+    });
 }
 
+// Screen switching
 function manualModeScreen() {
-    showScreen("manualModeScreen");
+    hideAllScreens();
+    document.getElementById('manualModeScreen').style.display = 'block';
 }
 
 function autoModeScreen() {
-    showScreen("autoModeScreen");
+    hideAllScreens();
+    document.getElementById('autoModeScreen').style.display = 'block';
 }
 
 function mappingModeScreen() {
-    showScreen("mappingModeScreen");
+    hideAllScreens();
+    document.getElementById('mappingModeScreen').style.display = 'block';
 }
 
-// Attach event listeners to control buttons
-document.addEventListener("DOMContentLoaded", () => {
-
-    // Mouse and Keyboard
-    document.getElementById("forwardButton").addEventListener("mousedown", () => sendCommand("F"));
-    document.getElementById("backwardsButton").addEventListener("mousedown", () => sendCommand("B"));
-    document.getElementById("leftButton").addEventListener("mousedown", () => sendCommand("L"));
-    document.getElementById("rightButton").addEventListener("mousedown", () => sendCommand("R"));
-    document.getElementById("restartButton").addEventListener("mousedown", () => sendCommand("C"));
-    document.getElementById("speed25").addEventListener("mousedown", () => sendCommand("25"));
-    document.getElementById("speed50").addEventListener("mousedown", () => sendCommand("50"));
-    document.getElementById("speed75").addEventListener("mousedown", () => sendCommand("75"));
-    document.getElementById("speed100").addEventListener("mousedown", () => sendCommand("100"));
-    document.addEventListener("mouseup", () => sendCommand("S"));
-
-    // Touchscreen
-    document.getElementById("forwardButton").addEventListener("touchstart", () => sendCommand("F"));
-    document.getElementById("backwardsButton").addEventListener("touchstart", () => sendCommand("B"));
-    document.getElementById("leftButton").addEventListener("touchstart", () => sendCommand("L"));
-    document.getElementById("rightButton").addEventListener("touchstart", () => sendCommand("R"));
-    document.getElementById("restartButton").addEventListener("touchstart", () => sendCommand("C"));
-    document.getElementById("speed25").addEventListener("touchstart", () => sendCommand("25"));
-    document.getElementById("speed50").addEventListener("touchstart", () => sendCommand("50"));
-    document.getElementById("speed75").addEventListener("touchstart", () => sendCommand("75"));
-    document.getElementById("speed100").addEventListener("touchstart", () => sendCommand("100"));
-    document.addEventListener("touchend", () => sendCommand("S"));
-});
-
-// Debugging: log key presses
-document.addEventListener("keydown", (e) => {
-    console.log(e.key);
-});
-
-document.addEventListener("keyup", (e) => {
-    console.log(e.key);
-});
+function hideAllScreens() {
+    document.getElementById('manualModeScreen').style.display = 'none';
+    document.getElementById('autoModeScreen').style.display = 'none';
+    document.getElementById('mappingModeScreen').style.display = 'none';
+}
