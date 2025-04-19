@@ -20,4 +20,5 @@
  - Push your changes
  - Let Lucas know you are merging a branch
  - Delete your branch (go to main branch, then press delete branch, then select your branch name)
- - Press Fetch to get the updated Main branch with your changes 
+ - Press Fetch to get the updated Main branch with your changes
+ - trsert
