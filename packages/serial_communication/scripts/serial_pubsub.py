@@ -8,34 +8,29 @@ import json
 
 ser = serial.Serial("/dev/ttyACM0", 9600, timeout=1)
 
-previousL = 0
-previousR = 0
-previousB = 0
-pub = None  # we'll set this in main
+pub = None
 
 def callback(data):
     rospy.loginfo("Sent %s to Arduino", data.data)
     ser.write((data.data + "\n").encode('utf-8'))
 
 def read_serial_loop():
-    global previousL, previousR, previousB
     rate = rospy.Rate(15)
     while not rospy.is_shutdown():
         data = ser.readline().decode('utf-8').strip()
-        #rospy.loginfo("Received: " + data)
         try:
             if data:
                 msg = serial_data()
+                # Decode the string into JSON Format
                 obj = json.loads(data)
+                # Assign each variable
                 msg.usB = usB = obj["usB"]
                 msg.usL = obj["usL"]
                 msg.usR = obj["usR"]
                 msg.arduinoEStop = obj["arduinoEStop"]
                 msg.per40 = obj["per40"]
                 msg.per12 = obj["per12"]
-
-                #rospy.loginfo("usB:"+ str(usB))
-                #rospy.loginfo("Received " + str(obj) + " from arduino\n")
+                # Publish the message
                 pub.publish(msg)
                 rate.sleep()
         except ValueError as e:
