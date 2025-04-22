@@ -1,71 +1,68 @@
 <!DOCTYPE html>
 <html lang="en">
-    <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Autonomous Snowblower Webapp Home</title>
-        <link rel="stylesheet" href="style.css">
-    </head>
-    <body>
-        <h1 class="banner">Autonomous Snowblower Webapp</h1>
-        
-        <section class="main">
-            <!-- Manual Mode screen -->
-            <section class="manualModeScreen" id="manualModeScreen">
-              	<div class="buttonContainer">
-                    <img id="videoStream" style="width: 100%; max-width: 640px; height: auto; border: 2px solid #ccc; border-radius: 8px;" />
-                </div>
-                <div class="header">Direction</div>
-                <div class="buttonContainer">
-                    <button id="forwardButton">Forward</button>
-                </div>
-                <div class="buttonContainer">
-                    <button id="leftButton">Left</button>
-                    <button id="rightButton">Right</button>
-                </div>
-                <div class="buttonContainer">
-                    <button id="backwardsButton">Backwards</button>
-                </div>
-
-                <div class="header">
-                    <p1>Speed Control: </p1>
-                </div>
-                <div class="buttonContainer">
-                    <button id="speed25">25%</button>
-                    <button id="speed50">50%</button>
-                    <button id="speed75">75%</button>
-                    <button id="speed100">100%</button>
-                </div>
-
-                <div class="buttonContainer">
-                    <p1 class="header">Toggle Blades</p1>
-                    <label class="switch">
-                        <input type="checkbox" id="bladeToggle">
-                        <span class="slider round"></span>
-                    </label>
-                </div>
-            </section>
-
-            <!-- Autonomous Mode screen -->
-            <section class="autoModeScreen" id="autoModeScreen">
-                <p>AUTO MODE</p>
-            </section>
-
-            <!-- Mapping Mode screen -->
-            <section class="mappingModeScreen" id="mappingModeScreen">
-                <p>MAPPING MODE</p>
-            </section>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Autonomous Snowblower Webapp Home</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <h1 class="banner">Autonomous Snowblower Webapp</h1>
+    
+    <section class="main">
+	
+	<div class="monitoring">40V: --% | 12V: --%</div>
+        <section class="manualModeScreen" id="manualModeScreen">
+            <div class="buttonContainer">
+                <img id="videoStream" style="width: 100%; max-width: 640px; height: auto; border: 2px solid #ccc; border-radius: 8px;" />
+            </div>
+            <div class="header">Direction</div>
+            <div class="buttonContainer">
+                <button id="forwardButton">Forward</button>
+            </div>
+            <div class="buttonContainer">
+                <button id="leftButton">Left</button>
+                <button id="rightButton">Right</button>
+            </div>
+            <div class="buttonContainer">
+                <button id="backwardsButton">Backwards</button>
+            </div>
+            <div class="header">
+                <p1>Speed Control: </p1>
+            </div>
+            <div class="buttonContainer">
+                <button id="speed25">25%</button>
+                <button id="speed50">50%</button>
+                <button id="speed75">75%</button>
+                <button id="speed100">100%</button>
+            </div>
+            <div class="buttonContainer">
+                <p1 class="header">Toggle Blades</p1>
+                <label class="switch">
+                    <input type="checkbox" id="bladeToggle">
+                    <span class="slider round"></span>
+                </label>
+            </div>
         </section>
 
-        <script src="script.js"></script>
-    </body>
+        <section class="autoModeScreen" id="autoModeScreen">
+            <p>AUTO MODE</p>
+        </section>
 
-    <footer>
-        <div class="modeButtonsContainer">
-            <button class="modeButtons" onclick="manualModeScreen()">Manual Mode</button>
-            <button class="modeButtons" onclick="autoModeScreen()">Autonomous Mode</button>
-            <button class="modeButtons" onclick="mappingModeScreen()">Mapping Mode</button>
-        </div>
-        <button id="eStop" class="eStopButton">E-STOP</button>
-    </footer>
+        <section class="mappingModeScreen" id="mappingModeScreen">
+            <p>MAPPING MODE</p>
+        </section>
+    </section>
+
+    <script src="script.js"></script>
+</body>
+
+<footer>
+    <div class="modeButtonsContainer">
+        <button class="modeButtons" onclick="manualModeScreen()">Manual Mode</button>
+        <button class="modeButtons" onclick="autoModeScreen()">Autonomous Mode</button>
+        <button class="modeButtons" onclick="mappingModeScreen()">Mapping Mode</button>
+    </div>
+    <button id="eStop" class="eStopButton">E-STOP</button>
+</footer>
 </html>

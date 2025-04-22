@@ -2,7 +2,6 @@
   font-family: system-ui, sans-serif;
 }
 
-
 body {
   background-color: #121212;
   color: white;
@@ -10,42 +9,51 @@ body {
   height: 100vh;
   display: flex;
   flex-direction: column;
-  justify-content: space-between; /* Push content to top and bottom */
-  overflow-x: hidden; /* Prevent horizontal overflow */
+  overflow-x: hidden;
+  overflow-y: auto;
+}
+
+.monitoring {
+  text-align: center;
+  padding: 20px;
+  font-size: 15px;
 }
 
 .banner {
   text-align: center;
   border-radius: 15px;
-  border-style: none;
+  padding: 20px;
+  font-size: 2rem;
+  background-color: #1e1e1e;
+  z-index: 1;
 }
 
-
 footer {
-  position: fixed; /* Fix footer at the bottom */
+  position: fixed;
   bottom: 0;
   width: 100%;
   padding: 15px 0;
   display: flex;
-  flex-direction: column; /* Stack the elements vertically */
+  flex-direction: column;
   justify-content: flex-start;
-  align-items: center; /* Center the content horizontally */
+  align-items: center;
   background-color: #000000;
   border-top: 2px solid #000000;
+  z-index: 2;
 }
 
 .modeButtons {
-  flex-grow: 1; /* Allow the buttons to grow to fill the available space */
+  flex-grow: 1;
   display: flex;
-  justify-content: center; /* Center the content inside the button */
-  margin: 0 5px; /* Add space between buttons */
+  justify-content: center;
+  margin: 0 5px;
 }
 
 .header {
   display: flex;
   justify-content: center;
   font-size: 25px;
-  padding-top:15px;
+  padding-top: 15px;
 }
 
 button {
@@ -54,7 +62,7 @@ button {
   border-radius: 3px;
   padding: 10px 20px;
   font-size: 1.1rem;
-  width: 100%; /* Make buttons fill the container */
+  width: 100%;
   text-align: center;
 }
 
@@ -63,7 +71,7 @@ button:hover {
   cursor: pointer;
 }
 
-/* Hide all modes by default */
+/* Manual/Auto/Mapping Mode Screens */
 .manualModeScreen,
 .autoModeScreen,
 .mappingModeScreen {
@@ -71,12 +79,11 @@ button:hover {
   background-color: #282828;
   border-radius: 10px;
   padding: 30px;
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  max-width: 600px;
-  overflow: hidden;
+  margin: 20px auto;
+  margin-bottom: 150px;
+  max-width: 640px;
+  width: 100%;
+  box-sizing: border-box;
 }
 
 .buttonContainer {
@@ -91,35 +98,35 @@ button:hover {
   flex-grow: 1;
   background-color: #282828;
   border-radius: 25px;
+  padding-top: 20px;
+  overflow-y: auto;
 }
 
 .modeButtonsContainer {
   display: flex;
-  justify-content: space-evenly; /* Evenly space the buttons */
+  justify-content: space-evenly;
   width: 100%;
 }
 
 
 .eStopButton {
-  background-color: #ff4d4d; /* Red color for E-STOP */
+  background-color: #ff4d4d;
   color: white;
   font-size: 1.1rem;
   padding: 15px 20px;
-  width: 100%; /* Make it span the entire width */
+  width: 100%;
   text-align: center;
   border-style: none;
   border-radius: 3px;
   margin-top: 10px;
-  margin-right:10px;
-  margin-left:10px;   
+  margin-right: 10px;
+  margin-left: 10px;
 }
 
 .eStopButton:hover {
-  background-color: #ff1a1a; /* Darker red on hover */
+  background-color: #ff1a1a;
   cursor: pointer;
 }
-
-
 
 /* The switch - the box around the slider */
 .switch {
@@ -146,8 +153,7 @@ button:hover {
   right: 0;
   bottom: 0;
   background-color: #ccc;
-  -webkit-transition: .4s;
-  transition: .4s;
+  transition: 0.4s;
 }
 
 .slider:before {
@@ -158,8 +164,7 @@ button:hover {
   left: 4px;
   bottom: 4px;
   background-color: white;
-  -webkit-transition: .4s;
-  transition: .4s;
+  transition: 0.4s;
 }
 
 input:checked + .slider {
@@ -171,8 +176,6 @@ input:focus + .slider {
 }
 
 input:checked + .slider:before {
-  -webkit-transform: translateX(26px);
-  -ms-transform: translateX(26px);
   transform: translateX(26px);
 }
 
@@ -183,4 +186,5 @@ input:checked + .slider:before {
 
 .slider.round:before {
   border-radius: 50%;
-} 
+}
+

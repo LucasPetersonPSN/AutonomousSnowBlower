@@ -3,7 +3,7 @@ from SimpleWebSocketServer import SimpleWebSocketServer, WebSocket
 import rospy
 from std_msgs.msg import String
 from sensor_msgs.msg import Image
-from webapp.msg import user_input
+from webapp.msg import user_input, serial_data
 from cv_bridge import CvBridge, CvBridgeError
 import cv2
 import threading
@@ -13,7 +13,7 @@ connected_clients = []
 bridge = CvBridge()
 
 class ControlServer(WebSocket):
-    pub = None  # Class-level publisher
+    pub = None
     previousSpeed = "25"
     previousDirection = "S"
 
@@ -75,19 +75,29 @@ def camera_callback(msg):
     except CvBridgeError as e:
         rospy.logerr("CvBridge Error: %s", str(e))
 
+def serial_callback(data):
+    message = "battery_data:{},{}".format(data.per40, data.per12)
+    for client in connected_clients:
+        try:
+            client.sendMessage(message)
+        except Exception as e:
+            rospy.logwarn("Failed to send battery data: %s", str(e))
+
 def start_camera_stream():
     rospy.Subscriber("/stereo_camera/left/image_raw", Image, camera_callback)
+
+def start_serial_subscriber():
+    rospy.Subscriber("/serial_data", serial_data, serial_callback)
 
 def main_loop():
     rospy.init_node('webapp_node', anonymous=True)
     ControlServer.pub = rospy.Publisher('user_input', String, queue_size=10)
 
-    # Start WebSocket server
     server = SimpleWebSocketServer("0.0.0.0", 8765, ControlServer)
     rospy.loginfo("WebSocket server started on ws://0.0.0.0:8765")
 
-    # Start camera subscriber in a new thread
     threading.Thread(target=start_camera_stream).start()
+    threading.Thread(target=start_serial_subscriber).start()
 
     try:
         server.serveforever()
@@ -99,3 +109,4 @@ if __name__ == "__main__":
         main_loop()
     except rospy.ROSInterruptException:
         pass
+

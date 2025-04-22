@@ -20,44 +20,35 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     bladeToggle.addEventListener('change', () => {
-        if (bladeToggle.checked) {
-            socket.send("BLADES_ON");
-        } else {
-            socket.send("BLADES_OFF");
-        }
+        socket.send(bladeToggle.checked ? "BLADES_ON" : "BLADES_OFF");
     });
 
-    // Motion controls with press + release logic
     addPressRelease('forwardButton', "F");
     addPressRelease('leftButton', "L");
     addPressRelease('rightButton', "R");
     addPressRelease('backwardsButton', "B");
 
-    // Speed controls
-    document.getElementById('speed25').addEventListener('click', () => {
-        socket.send("25");
-    });
+    document.getElementById('speed25').addEventListener('click', () => socket.send("25"));
+    document.getElementById('speed50').addEventListener('click', () => socket.send("50"));
+    document.getElementById('speed75').addEventListener('click', () => socket.send("75"));
+    document.getElementById('speed100').addEventListener('click', () => socket.send("100"));
 
-    document.getElementById('speed50').addEventListener('click', () => {
-        socket.send("50");
-    });
-
-    document.getElementById('speed75').addEventListener('click', () => {
-        socket.send("75");
-    });
-
-    document.getElementById('speed100').addEventListener('click', () => {
-        socket.send("100");
-    });
-
-    // Receive image stream
     socket.onmessage = function (event) {
         if (event.data.startsWith("data:image/jpeg;base64,")) {
             const videoElement = document.getElementById('videoStream');
             if (videoElement) {
                 videoElement.src = event.data;
             }
-        }
+        } else if (event.data.startsWith("battery_data:")) {
+    const parts = event.data.replace("battery_data:", "").split(",");
+    if (parts.length === 2) {
+        const per40 = parts[0];
+        const per12 = parts[1];
+        updateBannerBattery(per40, per12);
+    } else {
+        console.warn("Invalid battery data format:", event.data);
+    }
+}
     };
 });
 
@@ -67,9 +58,8 @@ function addPressRelease(buttonId, command) {
 
     button.addEventListener('mousedown', () => socket.send(command));
     button.addEventListener('mouseup', () => socket.send("S"));
-
     button.addEventListener('touchstart', (e) => {
-        e.preventDefault(); // prevent ghost clicks
+        e.preventDefault();
         socket.send(command);
     });
     button.addEventListener('touchend', (e) => {
@@ -78,7 +68,13 @@ function addPressRelease(buttonId, command) {
     });
 }
 
-// Screen switching
+function updateBannerBattery(per40, per12) {
+    const banner = document.querySelector('.monitoring');
+    if (banner) {
+        banner.textContent = `40V: ${per40}% | 12V: ${per12}%`;
+    }
+}
+
 function manualModeScreen() {
     hideAllScreens();
     document.getElementById('manualModeScreen').style.display = 'block';
@@ -99,3 +95,4 @@ function hideAllScreens() {
     document.getElementById('autoModeScreen').style.display = 'none';
     document.getElementById('mappingModeScreen').style.display = 'none';
 }
+
